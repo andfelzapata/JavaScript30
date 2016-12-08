@@ -59,23 +59,45 @@
 
 <script>
 
+/**
+ * Play audio given key code.
+ * 
+ */
+  function playAudio(e) {
 
-  function playSound(e) {
     const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+
     const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-    if (!audio) return; // stop the fucntion from running all together
-    audio.currentTime = 0; // rewind to the start
+
+    if(!audio) return;
+
+    // Rewind to audio start.
+    audio.currentTime = 0;
     audio.play();
+
     key.classList.add('playing');
   }
+
+  /**
+   * Remove playing class after the transform event has finished
+   * 
+   * @param  Event e transitionend
+   */
   function removeTransition(e) {
-    if (e.propertyName !== 'transform') return; // skip it if it's not a transform
+
+    if(e.propertyName !== 'transform') return;
+
     this.classList.remove('playing');
+
   }
 
-  const keys = document.querySelectorAll('.key');
-  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-  window.addEventListener('keydown', playSound);
+
+  document.querySelectorAll('.key')
+
+          .forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  // Play corresponding audio on keydown        
+  window.addEventListener('keydown', playAudio);
 
 </script>
 
